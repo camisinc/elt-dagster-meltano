@@ -2,7 +2,7 @@
 name = "dagster-meltano"
 version = "1.6.0"
 description = "A dagster plugin that allows you to run your Meltano project inside Dagster."
-authors = ["Camis"]
+authors = ["Quantile Development"]
 license = "Apache 2.0"
 readme = "README.md"
 packages = [
