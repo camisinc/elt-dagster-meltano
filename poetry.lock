@@ -375,20 +375,6 @@ typing_extensions = ">=4.11.0,<5"
 test = ["buildkite-test-collector", "flaky", "pytest"]
 
 [[package]]
-name = "dagster-shell"
-version = "0.11.14"
-description = "Package for Dagster shell solids."
-optional = false
-python-versions = "*"
-files = [
-    {file = "dagster-shell-0.11.14.tar.gz", hash = "sha256:786a7d784a13017914c295f3baaf740b87333cb27e6089b2b7328224a360d03f"},
-    {file = "dagster_shell-0.11.14-py3-none-any.whl", hash = "sha256:517bfe59c686a6f24fb503d62b54c452bac26d6bbecfc09acf4ce2d0351d6a77"},
-]
-
-[package.dependencies]
-dagster = "*"
-
-[[package]]
 name = "dill"
 version = "0.4.0"
 description = "serialize all of Python"
@@ -1916,5 +1902,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.9,<3.13"
-content-hash = "3547e40bc244c23db8eaf9ee37f68e9d70da26010b623bc964773613212b6c6b"
+python-versions = ">=3.9,<3.14"
+content-hash = "9c9bcfee31179d5e4d9cf1c6cb13a472bb82bc2d9c946f0e3e114cc871911984"
