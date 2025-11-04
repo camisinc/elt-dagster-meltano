@@ -1,12 +1,12 @@
 # Dagster-meltano
 
-A dagster plugin that allows you to run Meltano using Dagster.
+A dagster plugin that allows you to run Meltano using Dagster. Forked from the original repo that was from [Quantile Devlopment](https://github.com/quantile-development/dagster-meltano); with a special thanks to [Jules Huisman](https://github.com/JulesHuisman) for the maintenance of that repo.
 
-[![Downloads](https://pepy.tech/badge/dagster-meltano/month)](https://pepy.tech/project/dagster-meltano)
+[![Downloads](https://pepy.tech/badge/dagster-meltano-camis/month)](https://pepy.tech/project/dagster-meltano-camis)
 
 ## Installation
 
-You can install using `pip install dagster-meltano`.
+You can install using `pip install dagster-meltano-camis`.
 
 ## Examples
 
