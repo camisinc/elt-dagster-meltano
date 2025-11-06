@@ -42,7 +42,7 @@ jobs:
       - name: Publish package distribution to PyPi
         uses: pypa/gh-action-pypi-publish@release/v1.13.0
 
-      Send a slack notification to the auth alert channel
+      # Send a slack notification to the auth alert channel
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v2.1.1
         with:
