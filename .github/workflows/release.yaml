@@ -40,7 +40,7 @@ jobs:
         run: poetry build
 
       - name: Publish package distribution to PyPi
-        uses: pypa/gh-action-pypi-publish@release/v1.13.0
+        uses: pypa/gh-action-pypi-publish@release/v1
 
       # Send a slack notification to the auth alert channel
       - name: Send Slack Notification
