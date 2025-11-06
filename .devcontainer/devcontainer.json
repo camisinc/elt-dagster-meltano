@@ -1,11 +1,12 @@
+// Devcontainer will not work for the time being...
 {
-  "name": "dagster-meltano",
-  "image": "ghcr.io/quantile-development/vscode-python-base:3.8",
+  "name": "elt-dagster-meltano",
+  "image": "ghcr.io/camis/vscode-python-base:3.11",
   "features": {
     "ghcr.io/devcontainers-contrib/features/black:1": {},
     "ghcr.io/devcontainers-contrib/features/isort:1": {},
     "ghcr.io/devcontainers-contrib/features/meltano:1": {
-      "version": "2.12.0"
+      "version": "4.0.0"
     },
     "ghcr.io/devcontainers-contrib/features/poetry:1": {}
   },
@@ -18,6 +19,6 @@
     "waderyan.gitblame",
     "esbenp.prettier-vscode"
   ],
-  "postCreateCommand": "poetry config virtualenvs.in-project true && poetry install && git config --global --add safe.directory /workspaces/dagster-meltano",
+  "postCreateCommand": "poetry config virtualenvs.in-project true && poetry install && git config --global --add safe.directory /workspaces/elt-dagster-meltano",
   "remoteUser": "root"
 }

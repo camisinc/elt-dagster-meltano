@@ -1,4 +1,4 @@
-# Dagster-meltano
+# Dagster-Meltano
 
 A dagster plugin that allows you to run Meltano using Dagster. Forked from the original repo that was from [Quantile Devlopment](https://github.com/quantile-development/dagster-meltano); with a special thanks to [Jules Huisman](https://github.com/JulesHuisman) for the maintenance of that repo.
 
