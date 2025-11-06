@@ -42,14 +42,14 @@ jobs:
       - name: Publish package distribution to PyPi
         uses: pypa/gh-action-pypi-publish@release/v1.13.0
 
-      # Send a slack notification to the auth alert channel
-      # - name: Send Slack Notification
-      #   uses: slackapi/slack-github-action@v2.1.1
-      #   with:
-      #     webhook: ${{ secrets.SLACK_WEBHOOK }}
-      #     webhook-type: incoming-webhook
-      #     payload: |
-      #       {
-      #         "text": "Dagster-Meltano Build ${{ steps.gitversion.outputs.assemblySemVer }} ${{ job.status }} <@${{ steps.user.outputs.member-id }}>"
-      #       }
-      #   if: ${{ always() }}
+      Send a slack notification to the auth alert channel
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "ELT-Dagster-Meltano Build ${{ steps.gitversion.outputs.assemblySemVer }} ${{ job.status }} <@${{ steps.user.outputs.member-id }}>"
+            }
+        if: ${{ always() }}
