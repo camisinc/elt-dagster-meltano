@@ -2,9 +2,13 @@ import asyncio
 import json
 import logging
 import os
+import signal
+import tempfile
+from collections.abc import Mapping
 from functools import cached_property, lru_cache
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from subprocess import PIPE, STDOUT, Popen
+from typing import Dict, List, Optional, Union, Final
 
 from dagster import DagsterLogManager, resource, Field
 from dagster_meltano.exceptions import MeltanoCommandError
@@ -12,9 +16,106 @@ from dagster_meltano.exceptions import MeltanoCommandError
 from dagster_meltano.job import Job
 from dagster_meltano.schedule import Schedule
 from dagster_meltano.utils import Singleton
-from dagster_shell import execute_shell_command
 
 STDOUT = 1
+OUTPUT_LOGGING_OPTIONS: Final = ["STREAM", "BUFFER", "NONE"]
+
+
+def execute_shell_command(
+    shell_command: str,
+    output_logging: str,
+    log: Union[logging.Logger, DagsterLogManager],
+    cwd: Optional[str] = None,
+    env: Optional[Mapping[str, str]] = None,
+    log_shell_command: bool = True,
+) -> tuple[str, int]:
+    """Execute a shell command using subprocess.
+    
+    This function replicates the functionality of dagster-shell's execute_shell_command
+    using standard library utilities.
+    
+    The dagster-shell reference implementation can be found here:
+    https://github.com/dagster-io/dagster/blob/38cc3bbc1b104613748bf67c1fd2d0d2d17acd70/python_modules/libraries/dagster-shell/dagster_shell/utils.py#L135-L189
+    
+    Args:
+        shell_command (str): The shell command to execute
+        output_logging (str): The logging mode to use. Supports STREAM, BUFFER, and NONE.
+        log (Union[logging.Logger, DagsterLogManager]): Any logger which responds to .info()
+        cwd (str, optional): Working directory for the shell command to use.
+        env (Dict[str, str], optional): Environment dictionary to pass to subprocess.Popen.
+        log_shell_command (bool, optional): Whether to log the shell command before executing it.
+        
+    Returns:
+        Tuple[str, int]: A tuple where the first element is the combined stdout/stderr output 
+        and the second element is the return code.
+    """
+    if output_logging not in OUTPUT_LOGGING_OPTIONS:
+        raise Exception(f"Unrecognized output_logging {output_logging}")
+
+    def pre_exec():
+        # Restore default signal disposition and invoke setsid
+        for sig in ("SIGPIPE", "SIGXFZ", "SIGXFSZ"):
+            if hasattr(signal, sig):
+                signal.signal(getattr(signal, sig), signal.SIG_DFL)
+        os.setsid()
+
+    # Create a temporary script file
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as tmp_file:
+        tmp_file.write(shell_command)
+        tmp_file.flush()
+        script_path = tmp_file.name
+        
+    try:
+        if log_shell_command:
+            log.info(f"Running command:\n{shell_command}")
+
+        sub_process = None
+        try:
+            stdout_pipe = PIPE
+            stderr_pipe = STDOUT
+            if output_logging == "NONE":
+                stdout_pipe = stderr_pipe = None
+
+            sub_process = Popen(
+                ["bash", script_path],
+                stdout=stdout_pipe,
+                stderr=stderr_pipe,
+                cwd=cwd,
+                env=env,
+                preexec_fn=pre_exec,
+                encoding="UTF-8",
+            )
+
+            log.info(f"Command pid: {sub_process.pid}")
+
+            output = ""
+            if output_logging == "STREAM":
+                assert sub_process.stdout is not None, "Setting stdout=PIPE should always set stdout."
+                # Stream back logs as they are emitted
+                lines = []
+                for line in sub_process.stdout:
+                    log.info(line.rstrip())
+                    lines.append(line)
+                output = "".join(lines)
+            elif output_logging == "BUFFER":
+                # Collect and buffer all logs, then emit
+                output, _ = sub_process.communicate()
+                log.info(output)
+
+            sub_process.wait()
+            log.info(f"Command exited with return code {sub_process.returncode}")
+
+            return output, sub_process.returncode
+        finally:
+            # Always terminate subprocess, including in cases where the run is terminated
+            if sub_process:
+                sub_process.terminate()
+    finally:
+        # Clean up the temporary script file
+        try:
+            os.unlink(script_path)
+        except OSError:
+            pass
 
 
 class MeltanoResource(metaclass=Singleton):

@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "dagster-meltano"
-version = "1.5.5"
+name = "elt-dagster-meltano"
+version = "1.0.0"
 description = "A dagster plugin that allows you to run your Meltano project inside Dagster."
-authors = ["Quantile Development"]
+authors = ["Camis Inc"]
 license = "Apache 2.0"
 readme = "README.md"
+homepage = "https://github.com/camisinc/elt-dagster-meltano"
 packages = [
     { include = "dagster_meltano" }
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
-dagster = ">=1.3,<2"
-dagster-shell = ">=0,<1"
+python = ">=3.9,<3.14"
+dagster = ">=1.10,<2"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^2.15.9"
@@ -22,6 +22,3 @@ black = "^23.3.0"
 [build-system]
 requires = ["poetry-core>=1.0.8"]
 build-backend = "poetry.core.masonry.api"
-
-[project.urls]
-Homepage = "https://github.com/quantile-development/dagster-meltano"

@@ -1,0 +1,5 @@
+# Catch-all
+**/*                    @camisinc/data-owners
+
+# Github Components
+.github/**              @camisinc/pipeline-owners

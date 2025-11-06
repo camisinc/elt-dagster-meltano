@@ -1,5 +1,5 @@
 {
-  "python.linting.pylintPath": "/workspaces/dagster-meltano/.venv/bin/pylint",
+  "python.linting.pylintPath": "/workspaces/elt-dagster-meltano/.venv/bin/pylint",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -17,7 +17,7 @@
   "[python]": {
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.formatOnType": true,
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "editor.formatOnSave": true
   }
 }
