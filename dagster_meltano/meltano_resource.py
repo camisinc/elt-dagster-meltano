@@ -17,7 +17,6 @@ from dagster_meltano.job import Job
 from dagster_meltano.schedule import Schedule
 from dagster_meltano.utils import Singleton
 
-STDOUT = 1
 OUTPUT_LOGGING_OPTIONS: Final = ["STREAM", "BUFFER", "NONE"]
 
 
