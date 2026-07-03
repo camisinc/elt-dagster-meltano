@@ -40,7 +40,7 @@ jobs:
         run: poetry build
 
       - name: Publish package distribution to PyPi
-        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 #  release v1.14 + unstable/v1 (the only delta with this commit in unstable/v1 is the Node 20 => Node 24: https://github.com/pypa/gh-action-pypi-publish/pull/408)
 
       # Send a slack notification to the auth alert channel
       - name: Send Slack Notification
